@@ -1,0 +1,50 @@
+version: "1.0"
+
+paths:
+  ntl_root: "reproduction_v6/02_processed_data/nightlight_harmonization_v1/09_harmonized_ntl"
+  pop_root: "reproduction_v6/02_processed_data/population_log_pchip_v1/01_population_annual"
+  gdp_csv: "data/raw/using/socioeconomic/API_NY.GDP.MKTP.CD_DS2_en_csv_v2_155.csv"
+  country_id_raster: "reproduction_v6/02_processed_data/gadm_processed_v1/05_raster/country_id_30as_global.tif"
+  country_lookup_csv: "reproduction_v6/02_processed_data/gadm_processed_v1/05_raster/country_id_lookup.csv"
+  output_root: "reproduction_v6/02_processed_data/litpop_2000_2024_v1"
+  plan_output: "reproduction_v6/06_logs/litpop/litpop执行方案.md"
+  methodology_doc: "reproduction_v6/08_References/litpop/litpop.md"
+  reference_pdf: "reproduction_v6/08_References/litpop/Eberenz 等 - 2020 - Asset exposure data for global physical risk assessment.pdf"
+
+inputs:
+  ntl_pattern: "ntl_harmonized_{year}_dn_30as.tif"
+  pop_pattern: "population_{year}_30as.tif"
+
+years:
+  start: 2000
+  end: 2024
+
+litpop:
+  m: 1.0
+  n: 1.0
+
+ntl_window:
+  global_row_offset: 1800
+  height: 16800
+
+grid:
+  crs: "EPSG:4326"
+  resolution_deg: 0.008333333333333333
+  lon_min: -180.0
+  lon_max: 180.0
+  lat_min: -90.0
+  lat_max: 90.0
+  width: 43200
+  height: 21600
+  nodata: -9999.0
+  dtype: "float32"
+
+runtime:
+  overwrite: false
+  block_rows: 256
+  block_cols: 1024
+  compression: "LZW"
+  tiled: true
+  blockxsize: 512
+  blockysize: 512
+  bigtiff: "YES"

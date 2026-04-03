@@ -1,0 +1,39 @@
+﻿version: "1.0"
+
+paths:
+  input_root: "data/raw/using/population"
+  output_root: "reproduction_v6/02_processed_data/population_log_pchip_v1"
+  report_root: "reproduction_v6/07_reproduction_report/population"
+  plan_output: "reproduction_v6/06_logs/population/population执行方案.md"
+  reference_doc: "reproduction_v6/08_References/population/Log-PCHIP 方案详解.docx"
+  methodology_doc: "docs/using/数据整合方法论修订方案（修订版） (1).md"
+
+inputs:
+  base_years: [2000, 2005, 2010, 2015, 2020]
+  file_pattern: "{year}/gpw_v4_population_count_rev11_{year}_30_sec.tif"
+
+years:
+  target_start: 2000
+  target_end: 2024
+
+grid:
+  crs: "EPSG:4326"
+  resolution_deg: 0.008333333333333333
+  lon_min: -180.0
+  lon_max: 180.0
+  lat_min: -90.0
+  lat_max: 90.0
+  width: 43200
+  height: 21600
+  nodata: -9999.0
+  dtype: "float32"
+
+runtime:
+  overwrite: false
+  block_rows: 256
+  block_cols: 1024
+  compression: "LZW"
+  tiled: true
+  blockxsize: 512
+  blockysize: 512
+  bigtiff: "YES"

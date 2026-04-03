@@ -1,0 +1,88 @@
+version: "2.0"
+
+paths:
+  dmsp_dir: "data/raw/using/light/DMSP"
+  viirs_root: "data/raw/using/light"
+  output_root: "reproduction_v6/02_processed_data/nightlight_harmonization_v1"
+  report_root: "reproduction_v6/07_reproduction_report/nightlight"
+  plan_output: "reproduction_v6/06_logs/nightlight/nightlight执行方案.md"
+  reference_doc: "reproduction_v6/08_References/nightlight.md"
+
+years:
+  dmsp_start: 2000
+  dmsp_end: 2013
+  viirs_start: 2012
+  viirs_end: 2024
+  overlap_fit: [2012, 2013]
+  viirs_apply_start: 2014
+  viirs_apply_end: 2024
+  transition_qc_year: 2014
+
+grid:
+  crs: "EPSG:4326"
+  resolution_deg: 0.008333333333333333
+  lon_min: -180.0
+  lon_max: 180.0
+  lat_min: -65.0
+  lat_max: 75.0
+  nodata: -9999.0
+  dtype: "float32"
+  blockxsize: 512
+  blockysize: 512
+
+viirs:
+  tile_regex: "_([0-9]{2}[NS][0-9]{3}[EW])_"
+  avg_suffix: ".avg_rade9h.tif"
+  cf_suffix: ".cf_cvg.tif"
+  ignore_suffixes:
+    - ".cvg.tif"
+    - ".tgz"
+  target_tiles:
+    - "00N060E"
+    - "00N060W"
+    - "00N180W"
+    - "75N060E"
+    - "75N060W"
+    - "75N180W"
+  resampling_avg: "average"
+  resampling_cf: "sum"
+
+noise:
+  low_radiance_threshold: 0.3
+  high_lat_abs_threshold: 45.0
+  aurora_sigma_multiplier: 3.0
+  kd_sigma_pixels: 1.2
+
+fitting:
+  wp_extent:
+    lon_min: 100.0
+    lon_max: 180.0
+    lat_min: 0.0
+    lat_max: 50.0
+  sigmoid_initial:
+    a: 6.5
+    b: 57.4
+    c: -1.9
+    d: 10.8
+  sigmoid_bounds:
+    lower:
+      a: 0.0
+      b: 10.0
+      c: -20.0
+      d: 0.0
+    upper:
+      a: 20.0
+      b: 80.0
+      c: -0.01
+      d: 20.0
+  sample_stride: 8
+
+temporal:
+  drop_tolerance: 0.0
+  enforce_non_decreasing: true
+  smoothing_alpha: 0.5
+
+runtime:
+  overwrite: false
+  compression: "LZW"
+  bigtiff: "YES"
